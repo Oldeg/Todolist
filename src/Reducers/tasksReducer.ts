@@ -25,7 +25,7 @@ export const tasksReducer = (state: TasksStateType, action: ActionType): TasksSt
         case 'CHANGE_TASK_TITLE': {
             let todolistTasks = state[action.payload.todolistID];
             let task = todolistTasks.find(t => t.id === action.payload.id)
-            if(task){task.title = action.payload.newTitle} 
+            if(task){task.title = action.payload.newTitle}
             return {...state}
         }
         case 'DELETE_TASKS': {
