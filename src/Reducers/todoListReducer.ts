@@ -1,8 +1,7 @@
 import {FilterValuesType, TodolistType} from "../App";
-import {v1} from "uuid";
 
 
-export let newTodolistID:string
+
 export const todoListReducer = (state: Array<TodolistType>, action: ActionType): Array<TodolistType> => {
     switch (action.type) {
         case 'CHANGE_FILTER': {
@@ -14,8 +13,8 @@ export const todoListReducer = (state: Array<TodolistType>, action: ActionType):
         case 'REMOVE_TODOLIST' :
             return state.filter(tl => tl.id !== action.payload.id)
         case 'ADD_TODOLIST': {
-             newTodolistID = v1()
-            let newTodolist: TodolistType = {id: newTodolistID, title: action.payload.title, filter: 'all'};
+
+            let newTodolist: TodolistType = {id: action.payload.todolistID, title: action.payload.title, filter: 'all'};
             return [newTodolist, ...state]
         }
         default:
@@ -54,11 +53,12 @@ export const removeTodolistAC = (id: string) => {
 
     } as const
 }
-export const addTodolistAC = (title: string) => {
+export const addTodolistAC = (title: string, todolistID: string) => {
     return {
         type: 'ADD_TODOLIST',
         payload: {
             title,
+            todolistID
         }
     } as const
 }

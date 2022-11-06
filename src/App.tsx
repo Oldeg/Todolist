@@ -157,8 +157,9 @@ function App() {
             ...tasks,
             [newTodolistId]: []
         })*/
-        todolistsDispatch(addTodolistAC(title))
-        tasksDispatch(addTasksForNewTodolistAC())
+        let todolistID = v1();
+        todolistsDispatch(addTodolistAC(title,todolistID))
+        tasksDispatch(addTasksForNewTodolistAC(todolistID))
     }
 
     return (

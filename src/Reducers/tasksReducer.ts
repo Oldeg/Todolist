@@ -1,6 +1,6 @@
 import {TasksStateType} from "../App";
 import {v1} from "uuid";
-import {newTodolistID} from "./todoListReducer";
+
 
 
 export const tasksReducer = (state: TasksStateType, action: ActionType): TasksStateType => {
@@ -33,7 +33,7 @@ export const tasksReducer = (state: TasksStateType, action: ActionType): TasksSt
             return {...state}
         }
         case 'ADD_NEW_TASKS_FOR_TODOLIST': {
-            return {[newTodolistID]: [], ...state }
+            return {[action.payload.todolistID]: [], ...state }
         }
         default:
             return state
@@ -94,9 +94,12 @@ export const deleteTasksAC = (id:string) => {
         }
     }as const
 }
-export const addTasksForNewTodolistAC = () => {
+export const addTasksForNewTodolistAC = (todolistID: string) => {
     return {
         type: 'ADD_NEW_TASKS_FOR_TODOLIST',
+        payload: {
+            todolistID
+        }
 
     }as const
 }
