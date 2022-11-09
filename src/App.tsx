@@ -6,10 +6,9 @@ import {AddItemForm} from './AddItemForm';
 import ButtonAppBar from "./ButtonAppBar";
 import {Container, Grid, Paper} from "@mui/material";
 import {
-    addTaskAC, addTasksForNewTodolistAC,
+    addTaskAC,
     changeStatusAC,
     changeTaskTitleAC,
-    deleteTasksAC,
     removeTaskAC,
     tasksReducer
 } from "./Reducers/tasksReducer";
@@ -145,7 +144,7 @@ function App() {
         // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
         setTasks({...tasks});*/
         todolistsDispatch(removeTodolistAC(id))
-        tasksDispatch(deleteTasksAC(id))
+
     }
 
 
@@ -157,9 +156,8 @@ function App() {
             ...tasks,
             [newTodolistId]: []
         })*/
-        let todolistID = v1();
-        todolistsDispatch(addTodolistAC(title,todolistID))
-        tasksDispatch(addTasksForNewTodolistAC(todolistID))
+        todolistsDispatch(addTodolistAC(title))
+
     }
 
     return (
