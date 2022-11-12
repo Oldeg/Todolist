@@ -60,12 +60,13 @@ test('Task should be added', () => {
         ]
     }
     const endState = tasksReducer(startState, addTaskAC('Juice', todolistId1))
+
     expect(endState[todolistId1].length).toBe(3)
     expect(endState[todolistId1][1].id).toBe(taskID1)
     expect(endState[todolistId1][0].title).toBe('Juice')
     expect(endState).toEqual({
         [todolistId1]: [
-            {id: '123', title: 'Juice' , isDone: false},
+            {id: endState[todolistId1][0].id, title: 'Juice' , isDone: false},
             {id: taskID1, title: "HTML&CSS", isDone: true},
             {id: taskID2, title: "JS", isDone: true}
         ],
