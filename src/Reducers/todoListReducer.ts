@@ -9,7 +9,7 @@ const initialState: Array<TodolistType> = [
     {id: todolistId2, title: "What to buy", filter: "all"}
 ]
 
-export const todoListReducer = (state: Array<TodolistType> = initialState, action: ActionType): Array<TodolistType> => {
+export const todoListReducer = (state = initialState, action: ActionType): Array<TodolistType> => {
     switch (action.type) {
         case 'CHANGE_FILTER': {
             return state.map(el => el.id === action.payload.todolistId ? {...el, filter: action.payload.value} : el)

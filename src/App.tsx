@@ -7,10 +7,6 @@ import {Container, Grid, Paper} from "@mui/material";
 
 import {
     addTodolistAC,
-    changeFilterAC,
-    changeTodolistTitleAC,
-    removeTodolistAC,
-
 } from "./Reducers/todoListReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./Store/store";
@@ -32,37 +28,12 @@ function App() {
     const dispatch = useDispatch();
     const todoLists = useSelector<AppRootState, Array<TodolistType>>(state => state.todoLists)
 
-
-    function changeFilter(value: FilterValuesType, todolistId: string) {
-
-        dispatch(changeFilterAC(value, todolistId))
-    }
-
-    function changeTodolistTitle(id: string, title: string) {
-
-        dispatch(changeTodolistTitleAC(id, title))
-    }
-
-
-    function removeTodolist(id: string) {
-
-        dispatch(removeTodolistAC(id))
-
-    }
-
-
-    function addTodolist(title: string) {
-        dispatch(addTodolistAC(title))
-
-
-    }
-
     return (
         <div className="App">
             <ButtonAppBar/>
             <Container fixed>
                 <Grid container style={{padding: '40px 40px 40px 0px'}}>
-                    <AddItemForm addItem={addTodolist}/>
+                    <AddItemForm addItem={(title) =>dispatch(addTodolistAC(title))}/>
                 </Grid>
                 <Grid container spacing={3}>
                     {
@@ -71,13 +42,9 @@ function App() {
                             return <Grid item key={tl.id}>
                                 <Paper style={{padding: '10px'}}>
                                     <Todolist
-                                        key={tl.id}
                                         id={tl.id}
                                         title={tl.title}
-                                        changeFilter={changeFilter}
                                         filter={tl.filter}
-                                        removeTodolist={removeTodolist}
-                                        changeTodolistTitle={changeTodolistTitle}
                                     />
                                 </Paper>
 
