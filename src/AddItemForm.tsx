@@ -6,7 +6,7 @@ type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
 
-export function AddItemForm(props: AddItemFormPropsType) {
+export const AddItemForm = React.memo ((props: AddItemFormPropsType) => {
 
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
@@ -25,7 +25,9 @@ export function AddItemForm(props: AddItemFormPropsType) {
     }
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null);
+        if (error !== null) {
+            setError(null);
+        }
         if (e.charCode === 13) {
             addItem();
         }
@@ -34,7 +36,7 @@ export function AddItemForm(props: AddItemFormPropsType) {
     return <div>
         <TextField
             id="outlined-basic"
-            label={error? "Title is required!": 'Type something'}
+            label={error ? "Title is required!" : 'Type something'}
             variant="outlined"
             size='small'
             value={title}
@@ -42,8 +44,9 @@ export function AddItemForm(props: AddItemFormPropsType) {
             onKeyPress={onKeyPressHandler}
             error={!!error}
         />
-        <Button variant="contained" style={{maxWidth: '38px', maxHeight: '38px', minWidth: '38px', minHeight: '38px'}} onClick={addItem}>+</Button>
+        <Button variant="contained" style={{maxWidth: '38px', maxHeight: '38px', minWidth: '38px', minHeight: '38px'}}
+                onClick={addItem}>+</Button>
 
 
     </div>
-}
+})

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {AddItemForm} from './AddItemForm';
@@ -33,7 +33,7 @@ function App() {
             <ButtonAppBar/>
             <Container fixed>
                 <Grid container style={{padding: '40px 40px 40px 0px'}}>
-                    <AddItemForm addItem={(title) =>dispatch(addTodolistAC(title))}/>
+                    <AddItemForm addItem={useCallback((title) =>dispatch(addTodolistAC(title)),[dispatch])}/>
                 </Grid>
                 <Grid container spacing={3}>
                     {
