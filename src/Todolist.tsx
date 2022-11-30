@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./Store/store";
-import {addTaskAC} from "./Reducers/tasksReducer";
+import {addTaskAC, changeStatusAC, changeTaskTitleAC, removeTaskAC} from "./Reducers/tasksReducer";
 import {changeFilterAC, changeTodolistTitleAC, removeTodolistAC} from "./Reducers/todoListReducer";
 import {Task} from "./Task";
 
@@ -42,7 +42,15 @@ export const Todolist = React.memo((props: PropsType) => {
     if (props.filter === "completed") {
         tasksForTodolist = tasks.filter(t => t.isDone);
     }
-
+    const changeTaskTitle = (taskId: string, newTitle: string, todolistId: string) => {
+        dispatch(changeTaskTitleAC(taskId, newTitle, todolistId))
+    }
+    const changeTaskStatus = (taskId: string, isDone: boolean, todolistId: string) => {
+        dispatch(changeStatusAC(taskId, isDone, todolistId))
+    }
+    const removeTask = (taskId: string, todolistId: string) => {
+        dispatch(removeTaskAC(taskId, todolistId))
+    }
     return <div>
         <h3><EditableSpan value={props.title}
                           onChange={useCallback((title) => dispatch(changeTodolistTitleAC(props.id, title)), [props.id])}/>
@@ -56,7 +64,12 @@ export const Todolist = React.memo((props: PropsType) => {
 
 
             {
-                tasksForTodolist.map(t => <Task key={t.id} todolistId={props.id} task={t}/>)
+                tasksForTodolist.map(t => <Task key={t.id}
+                                                todolistId={props.id}
+                                                task={t}
+                                                changeTaskStatus={changeTaskStatus}
+                                                changeTaskTitle={changeTaskTitle}
+                                                removeTask={removeTask}/>)
             }
         </ul>
         <div>
