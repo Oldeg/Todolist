@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react'
-
-import {todolistAPI} from "../API/todolists-api";
+import {taskAPI} from "../API/task-api";
 
 export default {
-    title: 'TodolistAPI'
+    title: 'TaskAPI'
 }
 const settings = {
     withCredentials: true,
@@ -11,10 +10,10 @@ const settings = {
         'API-KEY': '4e5eb0fb-4857-4d22-8bd9-093ad3b03cbe'
     }
 }
-export const GetTodolists = () => {
+export const GetTask = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        todolistAPI.getTodoLists().then(
+        taskAPI.getTasks("dce03f23-daf1-4720-9971-fd8bec3dbaac").then(
             res => {
                 setState(res.data)
             }
@@ -24,10 +23,10 @@ export const GetTodolists = () => {
     }, [])
     return <div>{JSON.stringify(state)}</div>
 }
-export const CreateTodolist = () => {
+export const CreateTask = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        todolistAPI.createTodoLists('What to buy').then(
+        taskAPI.createTask("dce03f23-daf1-4720-9971-fd8bec3dbaac", 'Lalala').then(
             res => {
                 setState(res.data)
             }
@@ -36,20 +35,20 @@ export const CreateTodolist = () => {
 
     return <div>{JSON.stringify(state)}</div>
 }
-export const DeleteTodolist = () => {
+export const DeleteTask = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        todolistAPI.deleteTodoList("e323dba0-0778-481c-9e74-9c0b542fa29e").then(
+        taskAPI.deleteTask("dce03f23-daf1-4720-9971-fd8bec3dbaac",'Yoyoyo' ,"2c70fbc5-dbc6-469b-93d3-265043ab6144").then(
             res => setState(res.data)
         )
     }, [])
 
     return <div>{JSON.stringify(state)}</div>
 }
-export const UpdateTodolistTitle = () => {
+export const UpdateTask = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        todolistAPI.updateTodoList("d6340337-7d84-4480-bdee-f7ecaa129a1a", 'Hahahaha').then(
+        taskAPI.updateTask("dce03f23-daf1-4720-9971-fd8bec3dbaac", 'PPPPPPPPPPPPPPP',"28b25a22-c186-418e-98a4-70706e7c7c8c").then(
             res => setState(res.data)
         )
     }, [])
