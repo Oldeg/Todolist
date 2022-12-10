@@ -1,9 +1,11 @@
-import {TasksStateType} from "../App";
 import {addTodolistACType, removeTodolistACType} from "./todoListReducer";
 import {v1} from "uuid";
-const initialState: TasksStateType = {
+import {TaskPriorities, TaskStatuses, TaskType} from "../API/task-api";
 
+export type TasksStateType = {
+    [key: string]: Array<TaskType>
 }
+const initialState: TasksStateType = {}
 
 
 export const tasksReducer = (state = initialState, action: ActionType): TasksStateType => {
@@ -18,7 +20,11 @@ export const tasksReducer = (state = initialState, action: ActionType): TasksSta
 
             return {
                 ...state, [action.payload.todolistID]:
-                    [{id: v1(), title: action.payload.title, isDone: false}, ...state[action.payload.todolistID]]
+                    [{
+                        id: v1(), title: action.payload.title, status: TaskStatuses.New, order: 0,
+                        addedDate: '', deadline: '', description: '', startDate: '', priority: TaskPriorities.Low,
+                        todoListId: action.payload.todolistID
+                    }, ...state[action.payload.todolistID]]
             }
         }
         case 'CHANGE_STATUS': {
@@ -26,7 +32,7 @@ export const tasksReducer = (state = initialState, action: ActionType): TasksSta
                 ...state, [action.payload.todolistID]:
                     state[action.payload.todolistID].map(t => t.id === action.payload.id ? {
                         ...t,
-                        isDone: action.payload.isDone
+                        status: action.payload.status
                     } : t)
             }
         }
@@ -83,12 +89,12 @@ export const addTaskAC = (title: string, todolistID: string) => {
         }
     } as const
 }
-export const changeStatusAC = (id: string, isDone: boolean, todolistID: string) => {
+export const changeStatusAC = (id: string, status: TaskStatuses, todolistID: string) => {
     return {
         type: 'CHANGE_STATUS',
         payload: {
             id,
-            isDone,
+            status,
             todolistID
         }
     } as const

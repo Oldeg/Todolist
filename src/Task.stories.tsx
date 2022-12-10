@@ -1,11 +1,11 @@
 import React from 'react';
-import {ComponentStory, ComponentMeta} from '@storybook/react';
+import {ComponentMeta, ComponentStory} from '@storybook/react';
 
 
 import {Task} from "./Task";
 import {action} from "@storybook/addon-actions";
 import {ReduxStoreProviderDecorator} from "./stories/ReduxStoreProviderDecorator";
-
+import {TaskPriorities, TaskStatuses} from "./API/task-api";
 
 
 export default {
@@ -16,8 +16,11 @@ export default {
         changeTaskTitle: action('ChangeTaskTitle'),
         changeTaskStatus: action('ChangeTaskStatus'),
         removeTask: action('RemoveTask'),
-        task: {id:'abcd', title:'Task',isDone:true},
-        todolistId:'12345'
+        task: {id:'abcd', title:'Task',status: TaskStatuses.Completed,order:0,
+            addedDate:'', deadline:'', description:'', startDate:'', priority:TaskPriorities.Low,
+            todoListId: 'todolistId1'},
+        todolistId:'12345',
+
 
     }
 
@@ -34,7 +37,9 @@ export const TaskIsDoneStory = Template.bind({});
 export const TaskIsNotDoneStory = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 TaskIsNotDoneStory.args = {
-    task: {id:'abcd', title:'Task',isDone:false},
+    task: {id:'abcd', title:'Task',status:TaskStatuses.New, order:0,
+        addedDate:'', deadline:'', description:'', startDate:'', priority:TaskPriorities.Low,
+        todoListId: 'todolistId1' },
 };
 
 

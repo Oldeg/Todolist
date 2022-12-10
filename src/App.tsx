@@ -1,32 +1,25 @@
 import React, {useCallback} from 'react';
 import './App.css';
-import {TaskType, Todolist} from './Todolist';
+import {Todolist} from './Todolist';
 import {AddItemForm} from './AddItemForm';
 import ButtonAppBar from "./ButtonAppBar";
 import {Container, Grid, Paper} from "@mui/material";
 
 import {
-    addTodolistAC,
+    addTodolistAC, TodolistDomainType,
 } from "./Reducers/todoListReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./Store/store";
 
 
-export type FilterValuesType = "all" | "active" | "completed";
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
 
-export type TasksStateType = {
-    [key: string]: Array<TaskType>
-}
+
+
 
 
 function App() {
     const dispatch = useDispatch();
-    const todoLists = useSelector<AppRootState, Array<TodolistType>>(state => state.todoLists)
+    const todoLists = useSelector<AppRootState, Array<TodolistDomainType>>(state => state.todoLists)
 
     return (
         <div className="App">
