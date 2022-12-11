@@ -1,32 +1,29 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {Todolist} from './Todolist';
 import {AddItemForm} from './AddItemForm';
 import ButtonAppBar from "./ButtonAppBar";
 import {Container, Grid, Paper} from "@mui/material";
 
-import {
-    addTodolistAC, TodolistDomainType,
-} from "./Reducers/todoListReducer";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "./Store/store";
-
-
-
-
-
+import {addTodolistTC, fetchTodolistsTC, TodolistDomainType,} from "./Reducers/todoListReducer";
+import {useSelector} from "react-redux";
+import {AppRootState, useAppDispatch} from "./Store/store";
 
 
 function App() {
-    const dispatch = useDispatch();
-    const todoLists = useSelector<AppRootState, Array<TodolistDomainType>>(state => state.todoLists)
 
+
+    const dispatch = useAppDispatch();
+    const todoLists = useSelector<AppRootState, Array<TodolistDomainType>>(state => state.todoLists)
+    useEffect(() => {
+        dispatch(fetchTodolistsTC())
+    }, [])
     return (
         <div className="App">
             <ButtonAppBar/>
             <Container fixed>
                 <Grid container style={{padding: '40px 40px 40px 0px'}}>
-                    <AddItemForm addItem={useCallback((title) =>dispatch(addTodolistAC(title)),[dispatch])}/>
+                    <AddItemForm addItem={useCallback((title) => dispatch(addTodolistTC(title)), [dispatch])}/>
                 </Grid>
                 <Grid container spacing={3}>
                     {
