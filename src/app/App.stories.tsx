@@ -1,6 +1,6 @@
 import React from "react";
 import App from "./App";
-import {ReduxStoreProviderDecorator} from "./stories/ReduxStoreProviderDecorator";
+import {ReduxStoreProviderDecorator} from "../stories/ReduxStoreProviderDecorator";
 
 export default {
     title: 'App Component',
@@ -9,7 +9,5 @@ export default {
 }
 
 export const AppBaseExample = () => {
-    return (
-        <App/>
-    )
+    return (<App demo={true}/>)
 }

@@ -5,19 +5,21 @@ import {
     removeTodolistAC,
     TodolistDomainType,
     FilterValuesType,
-    todoListReducer, setTodolistAC
+    todoListReducer, setTodolistAC, changeTodolistEntityStatusAC
 } from './todoListReducer';
 import {v1} from 'uuid';
-let todolistId1:string;
-let todolistId2:string;
+import {RequestStatusType} from "../app/app-reducer";
+
+let todolistId1: string;
+let todolistId2: string;
 let startState: Array<TodolistDomainType>
 
 beforeEach(() => {
     todolistId1 = v1();
     todolistId2 = v1();
     startState = [
-        {id: todolistId1, title: "What to learn", filter: "all",addedDate: '', order:0},
-        {id: todolistId2, title: "What to buy", filter: "all",addedDate: '', order:0}
+        {id: todolistId1, title: "What to learn", filter: "all", addedDate: '', order: 0, entityStatus: 'idle'},
+        {id: todolistId2, title: "What to buy", filter: "all", addedDate: '', order: 0, entityStatus: 'idle'}
     ]
 })
 test('correct todolist should be removed', () => {
@@ -33,16 +35,20 @@ test('correct todolist should be added', () => {
 
     let newTodolistTitle = "New Todolist";
 
-    const endState = todoListReducer(startState, addTodolistAC({id:'1', title:newTodolistTitle, order:0, addedDate:''}))
+    const endState = todoListReducer(startState, addTodolistAC({
+        id: '1',
+        title: newTodolistTitle,
+        order: 0,
+        addedDate: ''
+    }))
 
     expect(endState.length).toBe(3);
-    expect(endState[2].title).toBe(newTodolistTitle);
+    expect(endState[0].title).toBe(newTodolistTitle);
 });
 test('correct todolist should change its name', () => {
 
 
     let newTodolistTitle = "New Todolist";
-
 
 
     const action = {
@@ -79,4 +85,14 @@ test('todolists should be set to the state', () => {
 
     expect(endState.length).toBe(2)
 })
+test('correct entity status of todolist should be changed', () => {
 
+
+    let newStatus: RequestStatusType = "loading";
+
+    const endState = todoListReducer(startState, changeTodolistEntityStatusAC(newStatus, todolistId1));
+
+    expect(endState[0].entityStatus).toBe("loading");
+    expect(endState[1].entityStatus).toBe("idle");
+
+});

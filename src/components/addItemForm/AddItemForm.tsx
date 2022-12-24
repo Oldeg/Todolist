@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
 
 export const AddItemForm = React.memo ((props: AddItemFormPropsType) => {
@@ -43,9 +44,10 @@ export const AddItemForm = React.memo ((props: AddItemFormPropsType) => {
             onChange={onChangeHandler}
             onKeyPress={onKeyPressHandler}
             error={!!error}
+            disabled={props.disabled}
         />
         <Button variant="contained" style={{maxWidth: '38px', maxHeight: '38px', minWidth: '38px', minHeight: '38px'}}
-                onClick={addItem}>+</Button>
+                onClick={addItem} disabled={props.disabled}>+</Button>
 
 
     </div>

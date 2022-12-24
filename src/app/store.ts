@@ -1,8 +1,9 @@
 import {AnyAction, applyMiddleware, combineReducers, compose, legacy_createStore} from "redux";
-import {TasksReducerActionsType, tasksReducer} from "../Reducers/tasksReducer";
-import {todoListReducer, TodolistsReducerActionsType} from "../Reducers/todoListReducer";
+import {tasksReducer, TasksReducerActionsType} from "../features/tasksReducer";
+import {todoListReducer, TodolistsReducerActionsType} from "../features/todoListReducer";
 import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {useDispatch} from "react-redux";
+import {appReducer} from "./app-reducer";
 
 
 declare global {
@@ -13,10 +14,11 @@ declare global {
 
 const rootReducer = combineReducers({
     todoLists: todoListReducer,
-    tasks: tasksReducer
+    tasks: tasksReducer,
+    app: appReducer
 })
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+/*const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;*/
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunk))
 export type AppDispatch = ThunkDispatch<AppRootState, unknown, AnyAction>

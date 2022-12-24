@@ -6,11 +6,17 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import LinearProgress from "@mui/material/LinearProgress";
+import {useSelector} from "react-redux";
+import {AppRootState} from "./store";
+import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 
-export default function ButtonAppBar() {
+export function ButtonAppBar() {
+    const status = useSelector<AppRootState, string>(state => state.app.status)
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
+                <ErrorSnackbar/>
                 <Toolbar>
                     <IconButton
                         size="large"
@@ -26,6 +32,7 @@ export default function ButtonAppBar() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+                {status === 'loading' ? <LinearProgress color='secondary'/> : '' }
             </AppBar>
         </Box>
     );
