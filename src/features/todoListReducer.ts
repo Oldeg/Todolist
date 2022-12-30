@@ -87,7 +87,6 @@ export const fetchTodolistsTC = (): AppThunk => (dispatch) => {
     dispatch(setStatus('loading'))
     todolistAPI.getTodoLists()
         .then((res) => {
-
             dispatch(setTodolistAC(res.data))
             dispatch(setStatus('succeeded'))
         }).catch((error: AxiosError<{ message: string }>) => {

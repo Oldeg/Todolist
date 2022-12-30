@@ -3,7 +3,8 @@ import {tasksReducer, TasksReducerActionsType} from "../features/tasksReducer";
 import {todoListReducer, TodolistsReducerActionsType} from "../features/todoListReducer";
 import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {useDispatch} from "react-redux";
-import {appReducer} from "./app-reducer";
+import {appReducer, AppReducerActionsType} from "./app-reducer";
+import {AuthActionsType, authReducer} from "../features/Login/authReducer";
 
 
 declare global {
@@ -15,7 +16,8 @@ declare global {
 const rootReducer = combineReducers({
     todoLists: todoListReducer,
     tasks: tasksReducer,
-    app: appReducer
+    app: appReducer,
+    auth:authReducer
 })
 
 /*const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;*/
@@ -23,7 +25,7 @@ const rootReducer = combineReducers({
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunk))
 export type AppDispatch = ThunkDispatch<AppRootState, unknown, AnyAction>
 export const useAppDispatch: () => AppDispatch = useDispatch
-export type AppActionsType = TodolistsReducerActionsType | TasksReducerActionsType;
+export type AppActionsType = TodolistsReducerActionsType | TasksReducerActionsType | AuthActionsType | AppReducerActionsType;
 export type AppRootState = ReturnType<typeof rootReducer>
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootState, unknown, AppActionsType>
 // @ts-ignore

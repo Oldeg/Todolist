@@ -6,7 +6,11 @@ import {AppRootState, AppThunk} from "../app/store";
 import {setError, SetErrorType, setStatus} from "../app/app-reducer";
 import axios, {AxiosError} from "axios";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
-
+export enum RESULT_CODE {
+    SUCCESS,
+    ERROR,
+    CAPTCHA = 10
+}
 export const tasksReducer = (state = initialState, action: TasksReducerActionsType): TasksStateType => {
     switch (action.type) {
         case 'REMOVE_TASK':
@@ -158,7 +162,7 @@ export const updateTaskTC = (todolistId: string, taskId: string, domainModel: Up
                     dispatch(updateTaskAC(taskId, domainModel, todolistId))
                     dispatch(setStatus('succeeded'))
                 } else {
-                    debugger
+
                     handleServerAppError(dispatch, res.data)
                 }
 
@@ -171,11 +175,7 @@ export const updateTaskTC = (todolistId: string, taskId: string, domainModel: Up
     }
 
 //types
-export enum RESULT_CODE {
-    SUCCESS,
-    ERROR,
-    CAPTCHA = 10
-}
+
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>

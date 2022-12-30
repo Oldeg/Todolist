@@ -4,7 +4,8 @@ let startState: InitialAppReducerStateType
 beforeEach(() => {
     startState = {
         error: null,
-        status: 'idle'
+        status: 'idle',
+        initialized: false
     }
 })
 test('correct error message should be set', () => {
