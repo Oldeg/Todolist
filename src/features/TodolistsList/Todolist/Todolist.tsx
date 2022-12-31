@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import {useSelector} from "react-redux";
 import {AppRootState, useAppDispatch} from "../../../app/store";
-import {addTaskTC, deleteTaskTC, getTasksTC, updateTaskTC,} from "../../tasksReducer";
+import {addTaskTC, deleteTaskTC, updateTaskTC,} from "../../tasksReducer";
 import {changeFilterAC, changeTodolistTC, removeTodolistTC, TodolistDomainType} from "../../todoListReducer";
 import {Task} from "./Task/Task";
 import {TaskStatuses, TaskType} from "../../../API/task-api";
@@ -26,8 +26,6 @@ export const Todolist = React.memo(({demo = false, ...props}: PropsType) => {
     const dispatch = useAppDispatch()
     useEffect(() => {
         if (demo) return
-
-        dispatch(getTasksTC(props.todolist.id))
     }, [])
 
     const onAllClickHandler = useCallback(() => dispatch(changeFilterAC("all", props.todolist.id)), [dispatch, props.todolist.id]);

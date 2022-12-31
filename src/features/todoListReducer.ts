@@ -3,7 +3,7 @@ import {AppThunk} from "../app/store";
 import {RequestStatusType, setStatus, SetStatusType} from "../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {AxiosError} from "axios";
-import {RESULT_CODE} from "./tasksReducer";
+import {getTasksTC, RESULT_CODE} from "./tasksReducer";
 
 
 const initialState: Array<TodolistDomainType> = []
@@ -31,7 +31,9 @@ export const todoListReducer = (state = initialState, action: TodolistsReducerAc
                 ...tl,
                 entityStatus: action.payload.entityStatus
             } : tl)
-
+        case 'CLEAR-TODOS-DATA': {
+            return []
+        }
         default:
             return state
     }
@@ -81,6 +83,8 @@ export const changeTodolistEntityStatusAC = (entityStatus: RequestStatusType, to
     payload: {entityStatus, todolistID}
 } as const)
 
+export const clearTodosDataAC = () => ({type: 'CLEAR-TODOS-DATA'} as const)
+
 
 //thunks
 export const fetchTodolistsTC = (): AppThunk => (dispatch) => {
@@ -89,10 +93,15 @@ export const fetchTodolistsTC = (): AppThunk => (dispatch) => {
         .then((res) => {
             dispatch(setTodolistAC(res.data))
             dispatch(setStatus('succeeded'))
-        }).catch((error: AxiosError<{ message: string }>) => {
-        const err = error.response ? error.response.data.message : error.message
-        handleServerNetworkError(dispatch, err)
-    })
+            return res.data
+        })
+        .then((todos) => {
+            todos.forEach(tl => dispatch(getTasksTC(tl.id)))
+        })
+        .catch((error: AxiosError<{ message: string }>) => {
+            const err = error.response ? error.response.data.message : error.message
+            handleServerNetworkError(dispatch, err)
+        })
 }
 export const removeTodolistTC = (todolistId: string): AppThunk => (dispatch) => {
     dispatch(setStatus('loading'))
@@ -152,6 +161,8 @@ export type TodolistsReducerActionsType =
     | setTodolistACType
     | SetStatusType
     | ChangeTodolistEntityStatusACType
+    | ClearDataActionType
+export type ClearDataActionType = ReturnType<typeof clearTodosDataAC>
 export type addTodolistACType = ReturnType<typeof addTodolistAC>
 export type removeTodolistACType = ReturnType<typeof removeTodolistAC>
 export type setTodolistACType = ReturnType<typeof setTodolistAC>

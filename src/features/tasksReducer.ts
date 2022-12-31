@@ -1,4 +1,4 @@
-import {addTodolistACType, removeTodolistACType, setTodolistACType} from "./todoListReducer";
+import {addTodolistACType, ClearDataActionType, removeTodolistACType, setTodolistACType} from "./todoListReducer";
 
 import {taskAPI, TaskPriorities, TaskStatuses, TaskType, UpdateTaskModelType} from "../API/task-api";
 
@@ -6,11 +6,13 @@ import {AppRootState, AppThunk} from "../app/store";
 import {setError, SetErrorType, setStatus} from "../app/app-reducer";
 import axios, {AxiosError} from "axios";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+
 export enum RESULT_CODE {
     SUCCESS,
     ERROR,
     CAPTCHA = 10
 }
+
 export const tasksReducer = (state = initialState, action: TasksReducerActionsType): TasksStateType => {
     switch (action.type) {
         case 'REMOVE_TASK':
@@ -52,6 +54,9 @@ export const tasksReducer = (state = initialState, action: TasksReducerActionsTy
         case 'SET_TASKS':
             return {...state, [action.payload.todolistID]: action.payload.tasks}
 
+        case 'CLEAR-TODOS-DATA': {
+            return {}
+        }
         default:
             return state
     }
@@ -198,5 +203,6 @@ export type TasksReducerActionsType =
     | setTodolistACType
     | ReturnType<typeof setTasksAC>
     | SetErrorType
+    | ClearDataActionType
 
 
