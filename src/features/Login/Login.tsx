@@ -21,7 +21,7 @@ type ErrorsType = {
 export const Login = () => {
     const dispatch = useAppDispatch()
     const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
-    dispatch(setStatus('idle'))
+    dispatch(setStatus({status:'idle'}))
 
     const formik = useFormik({
             validate: (values) => {

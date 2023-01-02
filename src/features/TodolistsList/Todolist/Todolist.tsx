@@ -28,9 +28,18 @@ export const Todolist = React.memo(({demo = false, ...props}: PropsType) => {
         if (demo) return
     }, [])
 
-    const onAllClickHandler = useCallback(() => dispatch(changeFilterAC("all", props.todolist.id)), [dispatch, props.todolist.id]);
-    const onActiveClickHandler = useCallback(() => dispatch(changeFilterAC("active", props.todolist.id)), [dispatch, props.todolist.id]);
-    const onCompletedClickHandler = useCallback(() => dispatch(changeFilterAC("completed", props.todolist.id)), [dispatch, props.todolist.id]);
+    const onAllClickHandler = useCallback(() => dispatch(changeFilterAC({
+        value: "all",
+        todolistId: props.todolist.id
+    })), [dispatch, props.todolist.id]);
+    const onActiveClickHandler = useCallback(() => dispatch(changeFilterAC({
+        value: "active",
+        todolistId: props.todolist.id
+    })), [dispatch, props.todolist.id]);
+    const onCompletedClickHandler = useCallback(() => dispatch(changeFilterAC({
+        value: "completed",
+        todolistId: props.todolist.id
+    })), [dispatch, props.todolist.id]);
     let tasksForTodolist = tasks;
 
     if (props.todolist.filter === "active") {
