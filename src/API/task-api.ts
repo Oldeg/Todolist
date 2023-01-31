@@ -59,7 +59,7 @@ type GetTaskType = {
     items: TaskType[]
     totalCount: number
 }
-type TaskResponseType<T = TaskType> = {
+export type TaskResponseType<T = TaskType> = {
     data: { item: T }
     resultCode: number
     messages: string[]

@@ -19,7 +19,7 @@ export function ButtonAppBar() {
     const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
     const logOutHandler = useCallback(() => {
         dispatch(logOutTC())
-    },[])
+    }, [dispatch])
     return (
         <Box sx={{flexGrow: 1}}>
             <AppBar position="static">

@@ -1,6 +1,6 @@
 import {v1} from "uuid";
-import {addTaskAC, removeTaskAC, setTasksAC, tasksReducer, TasksStateType, updateTaskAC,} from "./tasksReducer";
-import {addTodolistAC, removeTodolistAC, setTodolistAC} from "./todoListReducer";
+import {addTaskTC, deleteTaskTC, getTasksTC, tasksReducer, TasksStateType, updateTaskTC} from "./tasksReducer";
+import {addTodolistTC, fetchTodolistsTC, removeTodolistTC} from "./todoListReducer";
 import {TaskPriorities, TaskStatuses} from "../API/task-api";
 
 let todolistId1: string;
@@ -50,7 +50,10 @@ beforeEach(() => {
 
 test('Correct task should be removed', () => {
 
-    const endState = tasksReducer(startState, removeTaskAC({id: taskID1, todolistID: todolistId1}))
+    const endState = tasksReducer(startState, deleteTaskTC.fulfilled({
+        id: taskID1,
+        todolistID: todolistId1
+    }, '', {todolistId: todolistId1, taskId: taskID1}))
     expect(endState[todolistId1].length).toBe(1)
     expect(endState[todolistId1][0].id).toBe(taskID2)
     expect(endState).toEqual({
@@ -78,18 +81,23 @@ test('Correct task should be removed', () => {
 })
 test('Task should be added', () => {
 
-    const endState = tasksReducer(startState, addTaskAC({
-        task: {
-            todoListId: todolistId1, title: 'Juice', status: TaskStatuses.New, order: 0, addedDate: '',
-            deadline: '', description: '', priority: TaskPriorities.Low, startDate: '', id: 'exist'
-        }
-    }))
+    const endState = tasksReducer(startState, addTaskTC.fulfilled({
+
+        todoListId: todolistId1, title: 'Juice', status: TaskStatuses.New, order: 0, addedDate: '',
+        deadline: '', description: '', priority: TaskPriorities.Low, startDate: '', id: 'exist'
+
+    }, '', {title: 'Juice', todolistId: todolistId1}))
 
     expect(endState[todolistId1].length).toBe(3)
-    expect(endState[todolistId1][2].id).toBe('exist')
-    expect(endState[todolistId1][2].title).toBe('Juice')
+    expect(endState[todolistId1][0].id).toBe('exist')
+    expect(endState[todolistId1][0].title).toBe('Juice')
     expect(endState).toEqual({
         [todolistId1]: [
+            {
+                id: 'exist', title: 'Juice', status: TaskStatuses.New, order: 0,
+                addedDate: '', deadline: '', description: '', startDate: '', priority: TaskPriorities.Low,
+                todoListId: todolistId1
+            },
             {
                 id: taskID1, title: "HTML&CSS", status: TaskStatuses.Completed, order: 0,
                 addedDate: '', deadline: '', description: '', startDate: '', priority: TaskPriorities.Low,
@@ -99,12 +107,8 @@ test('Task should be added', () => {
                 id: taskID2, title: "JS", status: TaskStatuses.Completed, order: 0,
                 addedDate: '', deadline: '', description: '', startDate: '', priority: TaskPriorities.Low,
                 todoListId: todolistId1
-            },
-            {
-                id: 'exist', title: 'Juice', status: TaskStatuses.New, order: 0,
-                addedDate: '', deadline: '', description: '', startDate: '', priority: TaskPriorities.Low,
-                todoListId: todolistId1
             }
+
         ],
         [todolistId2]: [
             {
@@ -123,11 +127,11 @@ test('Task should be added', () => {
 })
 test('Task status should be changed', () => {
 
-    const endState = tasksReducer(startState, updateTaskAC({
-        id: taskID1,
-        model: {status: TaskStatuses.New},
-        todolistID: todolistId1
-    }))
+    const endState = tasksReducer(startState, updateTaskTC.fulfilled({
+        taskId: taskID1,
+        domainModel: {status: TaskStatuses.New},
+        todolistId: todolistId1
+    }, '', {todolistId: todolistId1, taskId: taskID1, domainModel: {status: TaskStatuses.New}}))
 
     expect(endState[todolistId1][0].status).toBe(TaskStatuses.New)
     expect(endState[todolistId1][1].status).toBe(TaskStatuses.Completed)
@@ -136,11 +140,11 @@ test('Task status should be changed', () => {
 })
 test('Task title should be changed', () => {
 
-    const endState = tasksReducer(startState, updateTaskAC({
-        id: taskID1,
-        model: {title: 'React'},
-        todolistID: todolistId1
-    }))
+    const endState = tasksReducer(startState, updateTaskTC.fulfilled({
+        taskId: taskID1,
+        domainModel: {title: 'React'},
+        todolistId: todolistId1
+    }, 'requestID', {todolistId: todolistId1, taskId: taskID1, domainModel: {title: 'React'}}))
 
     expect(endState[todolistId1][0].title).toBe('React')
     expect(endState[todolistId2][0].title).toBe('Milk')
@@ -148,7 +152,7 @@ test('Task title should be changed', () => {
 })
 test('Tasks should be deleted', () => {
 
-    const endState = tasksReducer(startState, removeTodolistAC({id: todolistId2}))
+    const endState = tasksReducer(startState, removeTodolistTC.fulfilled(todolistId2, 'requestID', todolistId2))
 
     expect(endState[todolistId1]).toBeDefined()
     expect(endState[todolistId2]).not.toBeDefined()
@@ -193,7 +197,7 @@ test('new array should be added when new todolist is added', () => {
         ]
     }
 
-    const action = addTodolistAC({todolist: {id: '1', title: 'title 1', order: 0, addedDate: ''}})
+    const action = addTodolistTC.fulfilled({id: '1', title: 'title 1', order: 0, addedDate: ''}, 'requestID', 'title 1')
 
     const endState = tasksReducer(startState, action)
 
@@ -212,7 +216,7 @@ test('Empty array should be added when we set todolists', () => {
         {id: '1', title: 'title 1', order: 0, addedDate: ''},
         {id: '2', title: 'title 2', order: 0, addedDate: ''}
     ]
-    const endState = tasksReducer({}, setTodolistAC({todolists: state}))
+    const endState = tasksReducer({}, fetchTodolistsTC.fulfilled(state, ''))
     const keys = Object.keys(endState)
 
     expect(keys.length).toBe(2)
@@ -221,7 +225,7 @@ test('Empty array should be added when we set todolists', () => {
 })
 test('Tasks should be added for todolists', () => {
     const state = startState[todolistId1]
-    const endState = tasksReducer({}, setTasksAC({todolistID: todolistId1, tasks: state}))
+    const endState = tasksReducer({}, getTasksTC.fulfilled({todolistId: todolistId1, tasks: state}, '', todolistId1))
 
 
     expect(endState[todolistId1].length).toBe(2)

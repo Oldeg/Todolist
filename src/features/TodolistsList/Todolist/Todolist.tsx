@@ -26,7 +26,7 @@ export const Todolist = React.memo(({demo = false, ...props}: PropsType) => {
     const dispatch = useAppDispatch()
     useEffect(() => {
         if (demo) return
-    }, [])
+    }, [demo])
 
     const onAllClickHandler = useCallback(() => dispatch(changeFilterAC({
         value: "all",
@@ -49,17 +49,20 @@ export const Todolist = React.memo(({demo = false, ...props}: PropsType) => {
         tasksForTodolist = tasks.filter(t => t.status);
     }
     const changeTaskTitle = (taskId: string, newTitle: string, todolistId: string) => {
-        dispatch(updateTaskTC(todolistId, taskId, {title: newTitle}))
+        dispatch(updateTaskTC({todolistId, taskId, domainModel: {title: newTitle}}))
     }
     const changeTaskStatus = (taskId: string, status: TaskStatuses, todolistId: string) => {
-        dispatch(updateTaskTC(todolistId, taskId, {status}))
+        dispatch(updateTaskTC({todolistId, taskId, domainModel: {status: status}}))
     }
     const removeTask = (taskId: string, todolistId: string) => {
-        dispatch(deleteTaskTC(todolistId, taskId))
+        dispatch(deleteTaskTC({todolistId, taskId}))
     }
     return <div>
         <h3><EditableSpan value={props.todolist.title}
-                          onChange={useCallback((title) => dispatch(changeTodolistTC(props.todolist.id, title)), [dispatch, props.todolist.id])}/>
+                          onChange={useCallback((title) => dispatch(changeTodolistTC({
+                              id: props.todolist.id,
+                              title
+                          })), [dispatch, props.todolist.id])}/>
 
             <IconButton aria-label="delete" onClick={() => dispatch(removeTodolistTC(props.todolist.id))}
                         disabled={props.todolist.entityStatus === 'loading'}>
@@ -67,7 +70,10 @@ export const Todolist = React.memo(({demo = false, ...props}: PropsType) => {
             </IconButton>
         </h3>
         <AddItemForm
-            addItem={useCallback((title) => dispatch(addTaskTC(title, props.todolist.id)), [dispatch, props.todolist.id])}
+            addItem={useCallback((title) => dispatch(addTaskTC({
+                title,
+                todolistId: props.todolist.id
+            })), [dispatch, props.todolist.id])}
             disabled={props.todolist.entityStatus === 'loading'}/>
         <ul>
 
