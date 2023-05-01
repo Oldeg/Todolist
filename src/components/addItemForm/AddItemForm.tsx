@@ -3,19 +3,18 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 type AddItemFormPropsType = {
-    addItem: (title: string) => void
+    addItem: (title: string, setTitle: (value: string) => void) => void
     disabled?: boolean
 }
 
-export const AddItemForm = React.memo ((props: AddItemFormPropsType) => {
+export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
 
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
 
     const addItem = () => {
         if (title.trim() !== "") {
-            props.addItem(title);
-            setTitle("");
+            props.addItem(title, setTitle);
         } else {
             setError("Title is required");
         }
@@ -34,7 +33,7 @@ export const AddItemForm = React.memo ((props: AddItemFormPropsType) => {
         }
     }
 
-    return <div>
+    return <div style={{marginLeft: '4px', display: 'flex', justifyContent: 'space-between'}}>
         <TextField
             id="outlined-basic"
             label={error ? "Title is required!" : 'Type something'}
@@ -46,7 +45,8 @@ export const AddItemForm = React.memo ((props: AddItemFormPropsType) => {
             error={!!error}
             disabled={props.disabled}
         />
-        <Button variant="contained" style={{maxWidth: '38px', maxHeight: '38px', minWidth: '38px', minHeight: '38px'}}
+        <Button variant="contained"
+                style={{maxWidth: '38px', maxHeight: '38px', minWidth: '38px', minHeight: '38px', marginLeft: '10px'}}
                 onClick={addItem} disabled={props.disabled}>+</Button>
 
 

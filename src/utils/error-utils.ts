@@ -1,17 +1,20 @@
-import {setError, setStatus} from "../app/app-reducer";
 import {Dispatch} from "redux";
-import {ResponseType} from '../API/todolists-api'
+import {ResponseType} from 'api/todolists-api'
+import {AxiosError} from 'axios';
+import {appActions} from 'app';
 
-export const handleServerNetworkError = (dispatch: Dispatch, error: string) => {
-    dispatch(setError({error}))
-    dispatch(setStatus({status:"failed"}))
+export const handleServerNetworkError = (dispatch: Dispatch, error: any) => {
+    console.log(error)
+    const err = error as AxiosError
+    dispatch(appActions.setError({error: err.message}))
+    dispatch(appActions.setStatus({status: "failed"}))
 }
 
 export const handleServerAppError = <T>(dispatch: Dispatch, data: ResponseType<T>) => {
     if (data.messages) {
-        dispatch(setError({error:data.messages[0]}))
+        dispatch(appActions.setError({error: data.messages[0]}))
     } else {
-        dispatch(setError({error:'Some error'}))
+        dispatch(appActions.setError({error: 'Some error'}))
     }
-    dispatch(setStatus({status:'failed'}))
+    dispatch(appActions.setStatus({status: 'failed'}))
 }

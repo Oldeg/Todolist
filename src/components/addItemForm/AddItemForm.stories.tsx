@@ -5,10 +5,10 @@ import {ComponentMeta, ComponentStory} from '@storybook/react';
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
-import {ReduxStoreProviderDecorator} from "../../stories/ReduxStoreProviderDecorator";
+import {ReduxStoreProviderDecorator} from "stories/ReduxStoreProviderDecorator";
 
 export default {
-    title: 'Todolist/AddItemForm Component',
+    title: 'todolist/AddItemForm Component',
     component: AddItemForm,
     decorators: [ReduxStoreProviderDecorator]
 
@@ -22,7 +22,7 @@ const TemplateWithErrors: ComponentStory<typeof AddItemForm> = (args) => {
 
         const addItem = () => {
             if (title.trim() !== "") {
-                args.addItem(title);
+                args.addItem(title, setTitle);
                 setTitle("");
             } else {
                 setError("Title is required");
@@ -87,7 +87,7 @@ export const AddItemFormWithError = TemplateWithErrors.bind({});
 
 const Template: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...args}/>
 export const AddItemFormExample = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
+
 AddItemFormExample.args = {
     addItem: action('Button was clicked')
 };

@@ -5,11 +5,11 @@ import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {Task} from "./Task";
 import {action} from "@storybook/addon-actions";
 import {ReduxStoreProviderDecorator} from "../../../../stories/ReduxStoreProviderDecorator";
-import {TaskPriorities, TaskStatuses} from "../../../../API/task-api";
+import {TaskPriorities, TaskStatuses} from "../../../../api/task-api";
 
 
 export default {
-    title: 'Todolist/Task',
+    title: 'todolist/task',
     component: Task,
     decorators:[ ReduxStoreProviderDecorator],
     args:{

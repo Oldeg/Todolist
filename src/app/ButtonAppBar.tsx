@@ -7,18 +7,19 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import LinearProgress from "@mui/material/LinearProgress";
-import {useSelector} from "react-redux";
-import {AppRootState, useAppDispatch} from "./store";
-import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
-import {logOutTC} from "../features/Login/authReducer";
-import {useCallback} from "react";
+import {ErrorSnackbar} from "components";
+import {authSelectors} from 'features/auth';
+import {appSelectors} from 'app/index';
+import {useTypedDispatch} from 'hooks/useTypedDispatch';
+import {useTypedSelector} from 'hooks/useTypedSelector';
+import {logOut} from 'features/auth/authActions';
 
 export function ButtonAppBar() {
-    const dispatch = useAppDispatch()
-    const status = useSelector<AppRootState, string>(state => state.app.status)
-    const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
-    const logOutHandler = useCallback(() => {
-        dispatch(logOutTC())
+    const dispatch = useTypedDispatch()
+    const status = useTypedSelector(appSelectors.selectStatus)
+    const isLoggedIn = useTypedSelector(authSelectors.selectorIsLoggedIn)
+    const logOutHandler = React.useCallback(() => {
+        dispatch(logOut())
     }, [dispatch])
     return (
         <Box sx={{flexGrow: 1}}>
@@ -39,7 +40,12 @@ export function ButtonAppBar() {
                     </Typography>
                     {isLoggedIn && <Button color="inherit" onClick={logOutHandler}>Log out</Button>}
                 </Toolbar>
-                {status === 'loading' ? <LinearProgress color='secondary'/> : ''}
+                {status === 'loading' ? <LinearProgress color='secondary' sx={{
+                    position: 'fixed',
+                    zIndex: '10',
+                    width: '100%',
+                    top: '64px'
+                }}/> : ''}
             </AppBar>
         </Box>
     );

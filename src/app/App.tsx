@@ -1,28 +1,30 @@
 import React, {useEffect} from 'react';
 import './App.css';
 import {ButtonAppBar} from "./ButtonAppBar";
-import {CircularProgress, Container} from "@mui/material";
-import {TodolistsList} from "../features/TodolistsList/TodolistsList";
+import {CircularProgress} from "@mui/material";
+import {TodoListsList} from "features/todolistsList/TodoListsList";
 import {Route, Routes} from "react-router-dom";
-import {Login} from "../features/Login/Login";
-import {useSelector} from "react-redux";
-import {AppRootState, useAppDispatch} from "./store";
-import {initializeAppTC} from "./app-reducer";
+import {Login} from "features/auth/Login";
+import {selectInitialize} from './selectors';
+import {useTypedSelector} from 'hooks/useTypedSelector';
+import {initializeApp} from 'app/appActions';
+import {useActions} from 'hooks/useActions';
+import {appActions} from 'app/index';
 
 type PropsType = {
     demo?: boolean
 }
 
 function App({demo = false}: PropsType) {
-    const dispatch = useAppDispatch()
-    const isInitialized = useSelector<AppRootState, boolean>(state => state.app.initialized)
+    const isInitialized = useTypedSelector(selectInitialize)
+    const {initializeApp} = useActions(appActions)
 
     useEffect(() => {
         if (!demo) {
-            dispatch(initializeAppTC())
+            initializeApp()
         }
 
-    }, [demo,dispatch])
+    }, [demo])
     if (!isInitialized) {
 
         return <CircularProgress sx={{position: 'absolute', top: '50%', left: '50%'}}/>
@@ -31,12 +33,12 @@ function App({demo = false}: PropsType) {
 
         <div className="App">
             <ButtonAppBar/>
-            <Container fixed>
+            <div>
                 <Routes>
-                    <Route path={'/'} element={<TodolistsList demo={demo}/>}/>
+                    <Route path={'/'} element={<TodoListsList demo={demo}/>}/>
                     <Route path={'/login'} element={<Login/>}/>
                 </Routes>
-            </Container>
+            </div>
 
         </div>
 

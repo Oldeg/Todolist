@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {taskAPI, TaskPriorities, TaskStatuses} from "../API/task-api";
+import {taskAPI, TaskPriorities, TaskStatuses} from "api/task-api";
 
 export default {
     title: 'TaskAPI'
@@ -39,7 +39,7 @@ export const CreateTask = () => {
     }
     return <div>
         <input type='text' placeholder={'TodolistID'} onChange={(e) => setTodolistId(e.currentTarget.value)}/>
-        <input type="text" placeholder={'Task title'} onChange={(e) => setTitle(e.currentTarget.value)}/>
+        <input type="text" placeholder={'task title'} onChange={(e) => setTitle(e.currentTarget.value)}/>
         <button onClick={createTask}>Create Task</button>
         <div>{JSON.stringify(state)}</div>
     </div>
@@ -77,7 +77,7 @@ export const UpdateTask = () => {
     return <div>
         <input type="text" placeholder={'TodolistId'} onChange={(e) => setTodolistId(e.currentTarget.value)}/>
         <input type="text" placeholder={'TaskId'} onChange={(e) => setTaskId(e.currentTarget.value)}/>
-        <input type="text" placeholder={'Task title'} onChange={(e) => setTitle(e.currentTarget.value)}/>
+        <input type="text" placeholder={'task title'} onChange={(e) => setTitle(e.currentTarget.value)}/>
         <button onClick={updateTask}>Update task</button>
         <div>{JSON.stringify(state)}</div>
     </div>

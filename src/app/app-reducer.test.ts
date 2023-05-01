@@ -1,8 +1,8 @@
-import {appReducer, RequestStatusType, setError, setStatus} from "./app-reducer";
+import {app, appActions} from "app";
 
 let startState: {
     error:null,
-    status: RequestStatusType,
+    status: app.RequestStatusType,
     initialized: boolean
 }
 beforeEach(() => {
@@ -14,13 +14,13 @@ beforeEach(() => {
 })
 test('correct error message should be set', () => {
 
-    const endState = appReducer(startState, setError({error:'Some error'}))
+    const endState = app.slice.reducer(startState, appActions.setError({error:'Some error'}))
 
     expect(endState.error).toBe('Some error');
 });
 test('correct status should be set', () => {
 
-    const endState = appReducer(startState, setStatus({status:'idle'}))
+    const endState = app.slice.reducer(startState, appActions.setStatus({status:'idle'}))
 
     expect(endState.status).toBe('idle');
 });
